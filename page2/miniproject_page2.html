@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아트클라우드 로그인</title>
+
+    <link rel="stylesheet" href="miniproject_page2.css">
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        Kakao.init('6fd43d72297abe13d4858bc6f861eda4');
+        function loginWithKakao() {
+            Kakao.Auth.authorize({
+                redirectUri: 'http://127.0.0.1:5500/'
+            });
+        }
+    </script>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+        }
+
+        function startGoogleSignIn() {
+            gapi.auth2.init({
+                client_id: 'AIzaSyCL2cGhIYmrVGVVl1QtnQMznQaAtW72vgY.apps.googleusercontent.com'
+            }).then(function () {
+                var GoogleAuth = gapi.auth2.getAuthInstance();
+                GoogleAuth.signIn().then(function (googleUser) {
+                    onSignIn(googleUser);
+                });
+            });
+        }
+    </script>
+
+    <!-- 파이어 베이스 관련 서비스 추가 -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+
+</head>
+
+<body>
+    <!-- 홈로고  -->
+    <div class="homeLogo">
+        <a href='../index.html'>아트클라우드</a>
+    </div>
+    <hr>
+
+    <!-- 로그인 폼 -->
+    <div class="logInBox">
+        <table>
+            <div id="loginForm" action="./miniproject_Page1">
+                <tr>
+                    <td colspan="3">
+                        <input type="text" id="username" name="id" placeholder="아이디">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <input type="password" id="passWord" name="password" placeholder="비밀번호">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button type="submit" id="logInBtn">로그인</button>
+                    </td>
+                </tr>
+                <tr class='loss'>
+                    <td colspan="3" align="center">
+                        <a href="#">아이디 찾기</a>
+                        <span>|</span>
+                        <a href="#">비밀번호 찾기</a>
+                        <span>|</span>
+                        <a href="../page3/miniproject_page3.html">회원가입</a>
+                    </td>
+                </tr>
+            </div>
+
+            <div id="space"></div>
+        </table>
+
+        <div id="icons">
+            <div class="loginIcon">
+                <a href="javascript:void(0);" class="login-btn" onclick="loginWithKakao()">
+                    <img src="https://cdn.icon-icons.com/icons2/2429/PNG/512/kakaotalk_logo_icon_147272.png"
+                        alt="카카오 아이콘">
+                </a>
+            </div>
+
+            <div class="loginIcon">
+                <a href="javascript:void(0);" class="login-btn" onclick="startGoogleSignIn()">
+                    <img src="https://cdn-icons-png.flaticon.com/256/2991/2991148.png" alt="구글 아이콘">
+                </a>
+            </div>
+
+            <div class="loginIcon">
+                <a href="javascript:void(0);" class="login-btn" onclick="startGoogleSignIn()">
+                    <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.namu.wiki%2Fi%2Fp_1IEyQ8rYenO9YgAFp_LHIAW46kn6DXT0VKmZ_jKNijvYth9DieYZuJX_E_H_4GkCER_sVKhMqSyQYoW94JKA.svg&type=sc960_832"
+                        alt="Naver">
+                </a>
+            </div>
+
+            <div class="loginIcon">
+                <a href="javascript:void(0);" class="login-btn" onclick="loginWithApple()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="./miniproject_page2.js"></script>
+
+</body>
+
+</html>

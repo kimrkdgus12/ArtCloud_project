@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아트클라우드 / EXHIBITION</title>
+    <style>
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'GmarketSansMedium';
+        }
+
+        body {
+            margin: 0;
+            background-color: white;
+            color: black;
+            font-family: 'Pretendard-Regular', sans-serif;
+        }
+
+        .allContainer {
+            display: flex;
+            height: 100vh;
+            /* 전체 화면 높이 */
+        }
+
+        /* 사이드 바  */
+        .sidebar {
+            width: 10%;
+            background-color: gray;
+            /* 사이드바 배경색 변경 */
+        }
+
+        .sidebar p {
+            box-sizing: border-box;
+            border: 1px solid white;
+            border-radius: 10px;
+            /* border-box 라인 색상 변경 */
+
+            font-size: 1.3rem;
+            font-weight: bold;
+
+            height: 5rem;
+            margin: 1rem 1rem 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar ul {
+            text-align: center;
+            padding: 0;
+
+        }
+
+        .sidebar li {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .sidebar ul li:hover {
+            color: #A4A79A;
+            transition: 0.6s ease;
+            background-color: whitesmoke;
+            /* 포인트 색 적용 */
+        }
+
+        /* 사이드바 작업 끝 */
+
+        .mainContent {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 10%;
+            background-color: white;
+            text-align: center;
+            border-bottom: gray solid 5px;
+        }
+
+        .main {
+            height: 80%;
+            background-color: white;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            /* 내용이 넘칠 때 스크롤 추가 */
+        }
+
+        .footer {
+            height: 10%;
+            background-color: white;
+            border-top: gray solid 5px;
+        }
+
+        /* 상단바  */
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* 검색창 위치 */
+            margin: 30px;
+        }
+
+        /* 상단 select 창 */
+        .search-input-wrapper select {
+            position: absolute;
+            left: 0;
+            height: 100%;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            padding-left: 5px;
+            border-right: 2px solid #A4A79A;
+            /* *******************************************************header select css, font 추가(예정) */
+        }
+
+        /* 상단 input 창 */
+        .search-input-wrapper input {
+            padding-left: 75px;
+            height: 30px;
+            width: 400px;
+            box-sizing: border-box;
+            /* *******************************************************header input css, font 추가(예정) */
+        }
+
+        /* 상단 검색하기 button */
+        .search-container button {
+            height: 30px;
+            margin-left: 10px;
+            /* *******************************************************header 검색하기 버튼 css,font 추가(예정) */
+        }
+
+        /* 로그아웃 버튼 */
+        #login-btn {
+            position: absolute;
+            top: 1rem;
+            right: 0.5rem;
+
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            background-color: gray;
+            /* 포인트 색 적용 */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        /* 로그아웃 버튼 호버 */
+        #login-btn:hover {
+            background-color: #A4A79A;
+        }
+
+        /* 테이블 style 값 */
+        table {
+            width: 100%;
+            margin: auto;
+            table-layout: fixed;
+        }
+
+        /* 테이블 내부 td 값 */
+        td {
+            /* 전시회 그림 이미지가 들어갈 cell 크기 */
+            height: 210px;
+        }
+
+        /* 상단에 div 버튼들 가운데 정렬 */
+        .search {
+            text-align: center;
+        }
+
+        /* 테이블 중간에 띄우기 용도 셀 값 */
+        .space {
+            height: 15px;
+        }
+
+        /* 전시회 제목 */
+        #titleID {
+            font-weight: bold;
+            font-size: 20px;
+            /* *******************************************************전시회 제목 css, font 추가(예정) */
+        }
+
+        /* 작성자 이름 */
+        #writeID {
+            font-size: 17px;
+            font-weight: lighter;
+            /* *******************************************************작성자 제목 css, font 추가(예정) */
+        }
+
+        /* 이미지 호버 시 오버레이 나타내기 */
+        td:hover .overlay {
+            opacity: 1;
+        }
+
+        td img:hover {
+            filter: brightness(70%);
+            /* 이미지를 조금 어둡게 처리하여 */
+            transition: filter 0.3s ease;
+            /* 부드러운 전환 효과 추가 */
+            cursor: pointer;
+            /* 호버 시 포인터 커서로 변경 */
+        }
+
+        /* 이미지 호버 시 스타일 */
+        #picture:hover {
+            text-decoration: overline;
+        }
+
+        /* 작성자 이름 호버 시 스타일 */
+        #writeID:hover {
+            text-decoration: underline;
+            /* 밑줄 추가 */
+            /* *******************************************************작성자 이름 호버 시 색상 변경 */
+        }
+
+        /* 하단의 글쓰기 버튼 */
+        .write_btn {
+            margin-right: auto;
+            margin-top: auto;
+            float: right;
+            width: 100px;
+            height: 30px;
+            font-weight: bolder;
+            border: 1px solid #A4A79A;
+            border-radius: 5px;
+            /* *******************************************************footer 글쓰기 버튼 css,font 추가(예정) */
+        }
+
+        .write_btn:hover {
+            filter: brightness(70%);
+            /* 이미지를 조금 어둡게 처리하여 */
+            transition: filter 0.3s ease;
+            /* 부드러운 전환 효과 추가 */
+            cursor: pointer;
+            /* 호버 시 포인터 커서로 변경 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="allContainer">
+        <div class="sidebar">
+            <p><a href="../index.html">Art Cloud</a></p>
+            <ul style="list-style:none;">
+                <a href="#">
+                    <li>BOOK</li>
+                </a>
+                <a href="#">
+                    <li>PICTURE</li>
+                </a>
+                <a href="#">
+                    <li>MOVIE</li>
+                </a>
+                <a href="#">
+                    <li>MUSIC</li>
+                </a>
+                <a href="#">
+                    <li>EXHIBITION</li>
+                </a>
+            </ul>
+        </div>
+
+
+        <div class="mainContent">
+
+
+            <div class="header">
+                <!-- 상단 -->
+                <div class="search">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <!-- 선택 옵션 두 가지 (작품, 작성자) -->
+                            <select id="search_select">
+                                <option>작품</option>
+                                <option>작성자</option>
+                            </select>
+                            <!-- 검색할 내용 - placeholder로 "검색할 내용을 작성하세요." -->
+                            <input class="input_text" id="search_input" type="text" placeholder="검색할 내용을 작성하세요.">
+                        </div>
+                        <!-- 검색하기 버튼 -->
+                        <button class="search_end" id="search_button">검색하기</button>
+                        <a href="../index.html" id="login-btn">out</a>
+                    </div>
+                </div>
+                <!-- 로그아웃 버튼 -->
+            </div>
+            <div class="main">
+                <!-- 가운데 들어갈 html -->
+                <main class="content">
+                    <table id="mainTable" class="body">
+                        <tbody align="center">
+                            <tr>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span class="title" id="titleID">easy heavy</span>
+                                </th>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span class="title" id="titleID">길 위의 도자</span>
+                                </th>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span id="titleID">아메리칸 팝아트 거장전</span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img id="picture1"
+                                        src="http://www.f1963.org/upload/art/20244215411/20240507150626_0ad9ef80.jpg"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                                <td>
+                                    <img id="picture2"
+                                        src="https://www.acc.go.kr/resources/upload/1741/20240412142255_938364448.jpg"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                                <td>
+                                    <img src="https://ticketimage.interpark.com/Play/image/large/24/24005984_p.gif"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span id="writeID">작성자 : 어려움</span>
+                                </th>
+                                <th>
+                                    <span id="writeID">작성자 : 벼랑 위의 포뇨</span>
+                                </th>
+                                <th id="writeID">작성자 : 내가 그린 기린 그림</th>
+                            </tr>
+                            <tr>
+                                <!-- 중단에 공간 띄우기 -->
+                                <th class="space"></th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span id="titleID">헬로키티 50주년 특별전</span>
+                                </th>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span id="titleID">에드바르 뭉크 : 비욘드 더 스크림</span>
+                                </th>
+                                <th>
+                                    <br>
+                                    <br>
+                                    <span id="titleID">이경준 사진전 : 원 스텝 어웨이</span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://ticketimage.interpark.com/Play/image/large/24/24005553_p.gif"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                                <td>
+                                    <img src="https://ticketimage.interpark.com/Play/image/large/24/24005098_p.gif"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                                <td>
+                                    <img src="https://ticketimage.interpark.com/Play/image/large/24/24003834_p.gif"
+                                        alt="" width="200px" height="200px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th id="writeID">작성자 : 지옥 고양이</th>
+                                <th id="writeID">작성자 : 아침의 내모습</th>
+                                <th id="writeID">작성자 : 찰칵</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </main>
+            </div>
+
+
+            <div class="footer">
+                <!-- 하단 -->
+                <footer class="write">
+                    <div>
+                        <!-- 글쓰기 버튼 -->
+                        <button class="write_btn" id="write_btn">글쓰기</button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 테이블 마진(웹 페이지의 오른쪽으로 붙이기)
+        document.addEventListener("DOMContentLoaded", () => {
+            const table = document.getElementById("mainTable");
+            table.style.marginLeft = "auto";
+            table.style.marginRight = "0";
+
+            // 글쓰기 버튼 위치 조정
+            const writeBtn = document.getElementById("write_btn");
+            writeBtn.style.transform = "translate(-50px, +20px)";
+        });
+
+        // 이미지 클릭 시 이벤트
+        const images = document.querySelectorAll("td img");
+        images.forEach(img => {
+            img.addEventListener("click", () => {
+                window.location.href = "miniproject_Page7.html"; // 현재 창에서 페이지 이동
+            });
+        });
+
+        // 작성자 클릭 시 이벤트
+        const writers = document.querySelectorAll("#writeID");
+        writers.forEach(writer => {
+            writer.addEventListener("click", () => {
+                window.location.href = "miniproject_Page7.html"; // 현재 창에서 페이지 이동
+            });
+        });
+
+        // 작성자 이름 호버 시 이벤트
+        writers.forEach(writer => {
+            writer.addEventListener("mouseover", () => {
+                writer.style.cursor = "pointer"; // 포인터 모양으로 변경
+            });
+
+            writer.addEventListener("mouseout", () => {
+                writer.style.color = "initial"; // 기본 색상으로 변경
+                writer.style.cursor = "default"; // 기본 커서로 변경
+            });
+        });
+
+        // 글쓰기 버튼 클릭 이벤트
+        let writeBtn = document.getElementById("write_btn");
+        writeBtn.addEventListener("click", () => {
+            window.location.href = "miniproject_Page6.html";
+        });
+    </script>
+</body>
+
+</html>
